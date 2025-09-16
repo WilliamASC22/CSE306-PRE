@@ -6,7 +6,15 @@
 
 #define bufferSize 1024
 
-//return number of columns
+/**
+ * Function: countColumns
+ * -------------------------
+ *    Counts the number of columns in a .csv file.
+ *
+ *    *currFile: input file
+ * 
+ *    returns: the number of columns in the input file
+ */
 int countColumns(FILE *currFile){
     char buffer[bufferSize];
     int fields = 1;
@@ -26,7 +34,15 @@ int countColumns(FILE *currFile){
     return fields;
 }
 
-// return number of rows
+/**
+ * Function: countRows
+ * ----------------------------
+ *    Returns the number of rows in a .csv file.
+ *
+ *    *currFile: input file 
+ *
+ *    returns: the number of rows in the input file 
+ */
 int countRows(FILE *currFile){
     char buffer[bufferSize];
     int lines = 0;
@@ -41,7 +57,16 @@ int countRows(FILE *currFile){
     return lines;
 }
 
-//get column index of column name
+/**
+ * Function: getColIndex
+ * -----------------------
+ *    Returns the index of a column name of a .csv file.
+ *
+ *    *colName: the name of the column
+ *    *currFile: input file
+ *
+ *    returns: the index of the column name
+ */
 int getColIndex(char *colName, FILE *currFile){
     char buffer[bufferSize];
     fgets(buffer, bufferSize, currFile);
@@ -65,7 +90,16 @@ int getColIndex(char *colName, FILE *currFile){
     return colIndex;
 }
 
-//return max field of column
+/**
+ * Function: maxField
+ * -----------------------
+ *    Returns the biggest field in a column of a .csv file.
+ *
+ *    colIndex: index of the column
+ *    *currFile: input file
+ *
+ *    returns: the maximum value in the column as an integer
+ */
 int maxField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
     //skip header
@@ -94,9 +128,16 @@ int maxField(int colIndex, FILE *currFile){
 }
 
 
-
-
-
+/**
+ * Function: minField
+ * -----------------------
+ *    Returns the minimum field value in a column of a .csv file.
+ *
+ *    colIndex: index of the column.
+ *    *currFile: input file.
+ *
+ *    returns: the minimum value in the column as a double
+ */
 double minField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
     //skip header
@@ -198,9 +239,16 @@ double minField(int colIndex, FILE *currFile){
     return mINIMUM;
 }
 
-
-
-
+/**
+ * Function: meanField
+ * ---------------------------
+ *    Returns the mean of all values in a column of a .csv file.
+ *
+ *    colIndex: index of the column
+ *    *currFile: input file
+ *
+ *    returns: the mean of the values in the column as a double.
+ */
 double meanField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
     //skip header
