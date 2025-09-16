@@ -140,14 +140,16 @@ int maxField(int colIndex, FILE *currFile){
  */
 double minField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
-    //skip header
+    // Skip header
     fgets(buffer, bufferSize, currFile);
 
-    double mINIMUM = 0;
-    //flag to set the first value of the column as the starting minimum value
-    int fIRSTVAL = 0;
+    // Initliaize minimum value
+    double minimum = 0.0;
+    
+    // Flag to set the first value of the column as the starting minimum value
+    int FIRST_VAL = 0;
 
-    //Loop through each line of the file
+    // Loop through each line of the file
     while(fgets(buffer, bufferSize, currFile) != NULL){
 
         //The column that you are looking at
@@ -162,69 +164,34 @@ double minField(int colIndex, FILE *currFile){
 
         //Make sure that the value exists
         if (data != NULL) {
-
             //Check if it is negitive
-            int nEGITIVEVALUE = 0;
+            int NEGATIVE_VALUE = 0;
 
-            if (data[nEGITIVEVALUE] == '-') {
-
-                nEGITIVEVALUE = nEGITIVEVALUE + 1;
-            }
+            if (data[NEGATIVE_VALUE] == '-') { NEGATIVE_VALUE = NEGATIVE_VALUE + 1; }
 
             //Check if every character is a digit
-            int yESDIGITS = 1;
+            int YES_DIGITS = 1;
 
             //Check every character if there is a decimal
-            int yESDECIMAL = 0;
+            int YES_DECIMAL = 0;
 
-            int iSSUEFOUND = 0;
+            int ISSUE_FOUND = 0;
 
             //Loop through each character
-            for (nEGITIVEVALUE; data[nEGITIVEVALUE] != '\0' && data[nEGITIVEVALUE] != '\r' && data[nEGITIVEVALUE] != '\n'; nEGITIVEVALUE++) {
-
-
-                if (((data[nEGITIVEVALUE]) >= '0' && (data[nEGITIVEVALUE]) <= '9')) {
-
-                    
-                    yESDIGITS = 0;
-                    
-                }
-
-                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 0) {
-
-
-                    yESDECIMAL = 1;
-                }
-
-                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 1) {
-
-
-                    iSSUEFOUND = 1;
-                }
-
-                else {
-
-                    iSSUEFOUND = 1;
-
-                }
+            for (NEGATIVE_VALUE; data[NEGATIVE_VALUE] != '\0' && data[NEGATIVE_VALUE] != '\r' && data[NEGATIVE_VALUE] != '\n'; NEGATIVE_VALUE++) {    
+                if (((data[NEGATIVE_VALUE]) >= '0' && (data[NEGATIVE_VALUE]) <= '9')) { YES_DIGITS = 0;}
+                else if (data[NEGATIVEVALUE] == '.' && yESDECIMAL == 0) {YES_DECIMAL = 1;}
+                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 1) {ISSUE_FOUND = 1;}
+                else {ISSUE_FOUND = 1;}
             }
 
-
-            if (iSSUEFOUND == 0 && yESDIGITS == 0){
-
+            if (ISSUE_FOUND == 0 && YES_DIGITS == 0){
                 double temp = atof(data);
-
-                if (fIRSTVAL == 0) {
-
-                    mINIMUM = temp;
-                    fIRSTVAL = 1;
+                if (FIRST_VAL == 0) {
+                    minimum = temp;
+                    FIRST_VAL = 1;
                 }
-
-                if (temp < mINIMUM)
-
-                    mINIMUM = temp;
-
-                
+                if (temp < minimum){ minimum = temp; }
             }
         }
     }
@@ -232,11 +199,11 @@ double minField(int colIndex, FILE *currFile){
     rewind(currFile);
 
     //The first value wasnt changed so there wasnt any numeric value
-    if (fIRSTVAL == 0) {
+    if (FIRST_VAL == 0) {
         exit(EXIT_FAILURE);
     }
 
-    return mINIMUM;
+    return minimum;
 }
 
 /**
@@ -254,8 +221,8 @@ double meanField(int colIndex, FILE *currFile){
     //skip header
     fgets(buffer, bufferSize, currFile);
 
-    double tOTAL = 0.0;
-    int aMOUNT = 0;
+    double total = 0.0;
+    int n = 0;
 
 
     //Loop through each line of the file
@@ -275,59 +242,33 @@ double meanField(int colIndex, FILE *currFile){
         if (data != NULL) {
 
             //Check if it is negitive
-            int nEGITIVEVALUE = 0;
+            int NEGATIVE_VALUE = 0;
 
-            if (data[nEGITIVEVALUE] == '-') {
+            if (data[NEGATIVE_VALUE] == '-') {
 
-                nEGITIVEVALUE = nEGITIVEVALUE + 1;
+                NEGATIVE_VALUE = NEGATIVE_VALUE + 1;
             }
 
             //Check if every character is a digit
-            int yESDIGITS = 1;
+            int YES_DIGITS = 1;
 
             //Check every character if there is a decimal
-            int yESDECIMAL = 0;
+            int YES_DECIMAL = 0;
 
-            int iSSUEFOUND = 0;
+            int ISSUE_FOUND = 0;
 
             //Loop through each character
-            for (nEGITIVEVALUE; data[nEGITIVEVALUE] != '\0' && data[nEGITIVEVALUE] != '\r' && data[nEGITIVEVALUE] != '\n'; nEGITIVEVALUE++) {
-
-
-                if (((data[nEGITIVEVALUE]) >= '0' && (data[nEGITIVEVALUE]) <= '9')) {
-
-                    
-                    yESDIGITS = 0;
-                    
-                }
-
-                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 0) {
-
-
-                    yESDECIMAL = 1;
-                }
-
-                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 1) {
-
-
-                    iSSUEFOUND = 1;
-                }
-
-                else {
-
-                    iSSUEFOUND = 1;
-
-                }
+            for (NEGATIVE_VALUE; data[NEGATIVE_VALUE] != '\0' && data[NEGATIVE_VALUE] != '\r' && data[NEGATIVE_VALUE] != '\n'; NEGATIVE_VALUE++) {
+                if (((data[NEGATIVE_VALUE]) >= '0' && (data[NEGATIVE_VALUE]) <= '9')) { YES_DIGITS = 0; }
+                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 0) { YES_DECIMAL = 1; }
+                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 1) { ISSUE_FOUND = 1; }
+                else { ISSUE_FOUND = 1; }
             }
 
-
-            if (iSSUEFOUND == 0 && yESDIGITS == 0){
-
+            if (ISSUE_FOUND == 0 && YES_DIGITS == 0){
                 double temp = atof(data);
-
-                tOTAL = tOTAL + temp;
-
-                aMOUNT = aMOUNT + 1;
+                total = total + temp;
+                n = n + 1;
             }
         }
     }
@@ -335,17 +276,70 @@ double meanField(int colIndex, FILE *currFile){
     rewind(currFile);
 
     //No number counted
-    if (aMOUNT == 0) {
+    if (n == 0) {
         exit(EXIT_FAILURE);
     }
 
-    double mEAN = tOTAL / aMOUNT;
-
-    return mEAN;
+    double mean = total / n;
+    return mean;
 }
 
+/**
+ * Function: findRecords
+ * -----------------------------
+ *    Returns all rows that contains the specified value in the
+ *    specified column.
+ *   
+ *    h: header row? (yes/no)
+ *    colIndex: the index of the column to search for 'value'
+ *    value: the desired value to search for in 'colIndex'
+ *    *currFile: input file
+ *    **matches: a list of all rows that match the criteria as strings
+ *
+ *    returns: the list of all rows as strings    
+ */
+int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matches){
+    char buffer[bufferSize];
+    if( h ){ fgets(buffer, bufferSize, currFile); }
 
+    rewind(currFile);
+    
+    //Loop through each line of the file
+    while(fgets(buffer, bufferSize, currFile) != NULL){
+        int currIndex = 0;
+        char *pb = buffer;
+        
+        int IN_QUOTES = 0;
+        int MATCH = 0;
+        
+        char field[MAX_LINE];
+        int fieldIndex = 0;
 
+        while (*pb != NULL) {
+            // Detect if we're going in/out of quotes
+            if (*pb == '"') { IN_QUOTES = !IN_QUOTES; }
+            // If we've reached the end of our column
+            else if (*p == ',' && !IN_QUOTES) {
+                    field[fieldIndex] = '\0'; // End the string
+                // If we've reached our desired column index,   
+                if (col == colIndex) {
+                    // Check if the field matches 'value'
+                    if (strcmp(field, value) == 0) { MATCH = 1; }
+                    break; 
+                }
+                fieldIndex = 0;
+                col++; // Move to the next column 
+            } else { field[fieldIndex++] = *p; }
+            p++;
+        }
+
+        if (match) {
+            matches[count] = strdup(buffer);
+            count++;
+        }
+
+        return 0;
+    }
 
 
 int main(int argc, char *argv[]){
@@ -353,7 +347,7 @@ int main(int argc, char *argv[]){
     int h_flag = 0;
 
     if(argc <= 1){
-        printf("Insufficient command line");
+        printf("Insufficient command line arguments");
     }else{
 
         //check if file is present
@@ -368,7 +362,7 @@ int main(int argc, char *argv[]){
             if(strcmp(argv[i], "-h") == 0){
                 h_flag = 1;
             }
-
+            
             else if(strcmp(argv[i], "-f") == 0){
                 int columns = countColumns(currFile);
                 printf("%d\n", columns);
