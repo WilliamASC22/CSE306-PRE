@@ -56,6 +56,16 @@ int countRows(FILE *currFile){
 
     return lines;
 }
+
+/**
+ * Function: printResult
+ * ---------------------------
+ * Prints the result as a double or integer
+ *
+ * num: number to print
+ *
+ * returns: none
+ */
 void printResult(double num){
     //if .00 == double print int, else print double
     if(floor(num) == num){
@@ -64,6 +74,23 @@ void printResult(double num){
     }else{
         printf("%.2f\n", num);
     }
+}
+/**
+ * Function: allDigits
+ * --------------------------
+ * Checks if all characters in a string are digits.
+ *
+ * *str = string to check
+ *
+ * returns: 0 if not all digits, 1 if all digits.
+ */
+int allDigits(char *str){
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)str[i])) {
+            return 0;
+        }
+    }
+    return 1; 
 }
  
 /**
@@ -100,7 +127,6 @@ int getColIndex(char *colName, FILE *currFile){
     return colIndex;
 }
 
-<<<<<<< HEAD
 /**
  * Function: maxField
  * -----------------------
@@ -427,7 +453,11 @@ int main(int argc, char *argv[]){
                 i++;
                 char *tempIndex = argv[i];
                 if(h_flag == 0){
-                    colIndex = atoi(tempIndex);
+                    if(allDigits(tempIndex)){
+                        colIndex = atoi(tempIndex);
+                    }else{
+                        printf("%s,\n","Incompatible arguments");
+                    }
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
@@ -440,7 +470,12 @@ int main(int argc, char *argv[]){
                 i++;
                 char *tempIndex = argv[i];
                 if(h_flag == 0){
-                    colIndex = atoi(tempIndex);
+                    if(allDigits(tempIndex)){
+                        colIndex = atoi(tempIndex);
+                    }else{
+                        printf("%s\n","Incompatible arguments");
+                        exit(EXIT_FAILURE);
+                    }
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
@@ -453,7 +488,12 @@ int main(int argc, char *argv[]){
                 i++;
                 char *tempIndex = argv[i];
                 if(h_flag == 0){
-                    colIndex = atoi(tempIndex);
+                    if(allDigits(tempIndex)){
+                        colIndex = atoi(tempIndex);
+                    }else{
+                        printf("%s\n","Incompatible arguments");
+                        exit(EXIT_FAILURE);
+                    }
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
@@ -464,7 +504,28 @@ int main(int argc, char *argv[]){
             }
 
             else if(strcmp(argv[i], "-records") == 0){
+                i++;
+                char *tempIndex = argv[i];
+                i++;
+                char *value = argv[i];
                 
+                int colIndex = 0;
+                if(h_flag == 0){
+                    if(allDigits(tempIndex)){
+                        colIndex = atoi(tempIndex);
+                    }else{
+                        printf("%s\n","Incompatible arguments");
+                    }
+                }else{
+                    colIndex = getColIndex(tempIndex, currFile);
+                }
+                int capacity = countRows(currFile);
+                char **matches = (char **)malloc(capacity*sizeOf(char *));
+                int n = findRecords(h_flag, colIndex, value,currFile,matches);
+
+                for(int i = 0; i < n;i++){
+                    printf("%s\n",matches[i]);
+                }
             }
 
             else{
