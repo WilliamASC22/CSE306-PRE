@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 #include <stdbool.h>
 
 #define bufferSize 1024
@@ -39,6 +39,16 @@ int countRows(FILE *currFile){
     rewind(currFile);
 
     return lines;
+}
+
+void printResult(double num){
+    //if .00 == double print int, else print double
+    if(floor(num) == num){
+        int temp = (int)num;
+        printf("%d\n", temp);
+    }else{
+        printf("%.2f\n", num);
+    }
 }
 
 //get column index of column name
@@ -340,7 +350,7 @@ int main(int argc, char *argv[]){
                     colIndex = getColIndex(tempIndex, currFile);
                 }
                 double maxNum = maxField(colIndex, currFile);
-                printf("%.2f\n", maxNum);
+                printResult(maxNum);
             }
 
             else if(strcmp(argv[i], "-min") == 0){
