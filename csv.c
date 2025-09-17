@@ -54,10 +54,6 @@ int getColIndex(char *colName, FILE *currFile){
         data = strtok(NULL, ",");
         colIndex++;
     }
-    if(data == NULL){
-        printf("Incorrect column name\n");
-        exit(EXIT_FAILURE);
-    }
 
     //reset pointer
     rewind(currFile);
@@ -66,12 +62,12 @@ int getColIndex(char *colName, FILE *currFile){
 }
 
 //return max field of column
-int maxField(int colIndex, FILE *currFile){
+double maxField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
     //skip header
     fgets(buffer, bufferSize, currFile);
 
-    int max = 0;
+    double max = 0;
     while(fgets(buffer, bufferSize, currFile) != NULL){
         int currIndex = colIndex;
         char *data = strtok(buffer, ",");
@@ -80,7 +76,7 @@ int maxField(int colIndex, FILE *currFile){
             currIndex--;
             data = strtok(NULL, ",");
         }
-        int temp = atoi(data);
+        double temp = atof(data);
 
         if(temp > max){
             max = temp;
@@ -343,8 +339,8 @@ int main(int argc, char *argv[]){
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
-                int maxNum = maxField(colIndex, currFile);
-                printf("%d\n", maxNum);
+                double maxNum = maxField(colIndex, currFile);
+                printf("%.2f\n", maxNum);
             }
 
             else if(strcmp(argv[i], "-min") == 0){
