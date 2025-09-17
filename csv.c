@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 #include <stdbool.h>
 
 #define bufferSize 1024
@@ -56,7 +56,16 @@ int countRows(FILE *currFile){
 
     return lines;
 }
-
+void printResult(double num){
+    //if .00 == double print int, else print double
+    if(floor(num) == num){
+        int temp = (int)num;
+        printf("%d\n", temp);
+    }else{
+        printf("%.2f\n", num);
+    }
+}
+ 
 /**
  * Function: getColIndex
  * -----------------------
@@ -79,9 +88,10 @@ int getColIndex(char *colName, FILE *currFile){
         data = strtok(NULL, ",");
         colIndex++;
     }
+
+    //last column
     if(data == NULL){
-        printf("Incorrect column name\n");
-        exit(EXIT_FAILURE);
+        colIndex--;
     }
 
     //reset pointer
@@ -90,6 +100,7 @@ int getColIndex(char *colName, FILE *currFile){
     return colIndex;
 }
 
+<<<<<<< HEAD
 /**
  * Function: maxField
  * -----------------------
@@ -98,31 +109,66 @@ int getColIndex(char *colName, FILE *currFile){
  *    colIndex: index of the column
  *    *currFile: input file
  *
- *    returns: the maximum value in the column as an integer
+ *    returns: the maximum value in the column as a double
  */
-int maxField(int colIndex, FILE *currFile){
+double maxField(int colIndex, FILE *currFile){
     char buffer[bufferSize];
     //skip header
     fgets(buffer, bufferSize, currFile);
 
-    int max = 0;
+    double max = 0;
     while(fgets(buffer, bufferSize, currFile) != NULL){
         int currIndex = colIndex;
         char *data = strtok(buffer, ",");
+        int index = 0;
 
         while(currIndex != 0){
+            index++;
+            int quoteFlag = 0;
             currIndex--;
             data = strtok(NULL, ",");
+
+            if(data[0] == '"'){
+                quoteFlag = 1;
+                while(quoteFlag == 1){
+                    if(data[strlen(data) - 1] != '"'){
+                        data = strtok(NULL, ",");
+                    }else{
+                        quoteFlag = 0;
+                    }
+                }
+            }
         }
-        int temp = atoi(data);
+        //flag non numeric
+        int decimalFlag = 0;
+        int i = 0;
+
+        if(data[i] == '-'){
+            i++;
+        }
+
+        for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
+            if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
+                printf("Non numeric data\n");
+                exit(EXIT_FAILURE);
+            }
+
+            if(data[i] == '.'){
+                decimalFlag++;
+            }
+
+            if(decimalFlag > 1){
+                printf("Non numeric data\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        double temp = atof(data);
 
         if(temp > max){
             max = temp;
         }
     }
-
-
-    //if no numeric exit_failure
 
     return max;
 }
@@ -385,8 +431,8 @@ int main(int argc, char *argv[]){
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
-                int maxNum = maxField(colIndex, currFile);
-                printf("%d\n", maxNum);
+                double maxNum = maxField(colIndex, currFile);
+                printResult(maxNum);
             }
 
             else if(strcmp(argv[i], "-min") == 0){
