@@ -65,6 +65,11 @@ int getColIndex(char *colName, FILE *currFile){
         colIndex++;
     }
 
+    //last column
+    if(data == NULL){
+        colIndex--;
+    }
+
     //reset pointer
     rewind(currFile);
 
@@ -81,20 +86,55 @@ double maxField(int colIndex, FILE *currFile){
     while(fgets(buffer, bufferSize, currFile) != NULL){
         int currIndex = colIndex;
         char *data = strtok(buffer, ",");
+        int index = 0;
 
         while(currIndex != 0){
+            index++;
+            int quoteFlag = 0;
             currIndex--;
             data = strtok(NULL, ",");
+
+            if(data[0] == '"'){
+                quoteFlag = 1;
+                while(quoteFlag == 1){
+                    if(data[strlen(data) - 1] != '"'){
+                        data = strtok(NULL, ",");
+                    }else{
+                        quoteFlag = 0;
+                    }
+                }
+            }
         }
+        //flag non numeric
+        int decimalFlag = 0;
+        int i = 0;
+
+        if(data[i] == '-'){
+            i++;
+        }
+
+        for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
+            if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
+                printf("Non numeric data\n");
+                exit(EXIT_FAILURE);
+            }
+
+            if(data[i] == '.'){
+                decimalFlag++;
+            }
+
+            if(decimalFlag > 1){
+                printf("Non numeric data\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
         double temp = atof(data);
 
         if(temp > max){
             max = temp;
         }
     }
-
-
-    //if no numeric exit_failure
 
     return max;
 }
