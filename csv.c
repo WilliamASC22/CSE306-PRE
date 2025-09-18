@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "csv.h"
 
 #define bufferSize 1024
@@ -69,7 +70,7 @@ int countRows(FILE *currFile){
  */
 void printResult(double num){
     //if .00 == double print int, else print double
-    if(floor(num) == num){
+    if((int)num == num){
         int temp = (int)num;
         printf("%d\n", temp);
     }else{
@@ -257,11 +258,11 @@ double minField(int colIndex, FILE *currFile){
             i++;
         }
 
-        int nOPROMBLEM = 0;
+        int NO_PROBLEM = 0;
 
         for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
             if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
-                nOPROMBLEM = 1;
+                NO_PROBLEM = 1;
             }
 
             if(data[i] == '.'){
@@ -269,25 +270,21 @@ double minField(int colIndex, FILE *currFile){
             }
 
             if(decimalFlag > 1){
-                nOPROMBLEM = 1;
+                NO_PROBLEM = 1;
             }
         }
 
         //Only change total and amount if there is no problem
-        if (nOPROMBLEM == 0) {
-        
-
+        if (NO_PROBLEM == 0) {
             double temp = atof(data);
-            
+
             if (FIRST_VAL == 0) {
                 minimum = temp;
                 FIRST_VAL = 1;
             }
-
+       
             if (temp < minimum){ minimum = temp; }
         }
-            
-        
     }
 
     rewind(currFile);
@@ -354,11 +351,11 @@ double meanField(int colIndex, FILE *currFile){
             i++;
         }
 
-        int nOPROMBLEM = 0;
+        int NO_PROBLEM = 0;
 
         for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
             if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
-                nOPROMBLEM = 1;
+                NO_PROBLEM = 1;
             }
 
             if(data[i] == '.'){
@@ -366,12 +363,12 @@ double meanField(int colIndex, FILE *currFile){
             }
 
             if(decimalFlag > 1){
-                nOPROMBLEM = 1;
+                NO_PROBLEM = 1;
             }
         }
 
         //Only change total and amount if there is no problem
-        if (nOPROMBLEM == 0) {
+        if (NO_PROBLEM == 0) {
             double temp = atof(data);
             total = total + temp;
             amount = amount + 1;
@@ -406,33 +403,24 @@ double meanField(int colIndex, FILE *currFile){
  *
  *    returns: the list of all rows as strings    
  */
-int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matches) {
-
-    #define MAX_LINE 1204
-
+int findRecords(int colIndex, char *value, FILE *currFile, char **matches) {
     char buffer[bufferSize];
-    if( h ){ fgets(buffer, bufferSize, currFile); }
-
     int count = 0; 
-
-    
-
     rewind(currFile);
     
     //Loop through each line of the file
     while(fgets(buffer, bufferSize, currFile) != NULL){
-        int currIndex = 0;
         char *pb = buffer;
         
         int IN_QUOTES = 0;
         int MATCH = 0;
         
-        char field[MAX_LINE];
+        char field[bufferSize];
         int fieldIndex = 0;
 
         int col = 0; 
 
-        while (*pb != NULL) {
+        while (pb != NULL) {
             // Detect if we're going in/out of quotes
             if (*pb == '"') { IN_QUOTES = !IN_QUOTES; }
             // If we've reached the end of our column
@@ -451,16 +439,12 @@ int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matche
         }
 
         if (MATCH) {
-            matches[count] = strdup(buffer);
+            matches[count] = buffer;
             count++;
         }
-
-
         return 0;
     }
-
     return count;
-
 }
 
 int main(int argc, char *argv[]){
@@ -569,8 +553,8 @@ int main(int argc, char *argv[]){
                     colIndex = getColIndex(tempIndex, currFile);
                 }
                 int capacity = countRows(currFile);
-                char **matches = (char **)malloc(capacity*sizeOf(char *));
-                int n = findRecords(h_flag, colIndex, value,currFile,matches);
+                char **matches = (char **)malloc(capacity*sizeof(char*));
+                int n = findRecords(colIndex, value,currFile,matches);
 
                 for(int i = 0; i < n;i++){
                     printf("%s\n",matches[i]);
@@ -578,7 +562,8 @@ int main(int argc, char *argv[]){
             }
 
             else{
-
+                printf("Unknown flag \'%s\'\n",argv[i]);
+                exit(EXIT_FAILURE);
             }
         }
     }

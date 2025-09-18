@@ -19,7 +19,10 @@ DEBUG = -g
 csv.o: csv.h csv.c
 	$(CC) -c $(DEBUG) $(CFLAGS) csv.c
 
-tests.o: tests.c code.h
+csv: 	csv.o
+	$(CC) $(DEBUG) $(CFLAGS) -o csv csv.o
+
+tests.o: tests.c csv.h
 	$(CC) -c $(DEBUG) $(CFLAGS) -I $(INCLUDE_PATH) tests.c
 
 tests:  csv.o tests.o

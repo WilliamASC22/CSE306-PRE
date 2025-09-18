@@ -10,7 +10,7 @@ int getColIndex(char *colName, FILE *currFile);
 double maxField(int colIndex, FILE *currFile);
 double minField(int colIndex, FILE *currFile);
 double meanField(int colIndex, FILE *currFile);
-int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matches);
+int findRecords(int colIndex, char *value, FILE *currFile, char **matches);
 
 
 #endif
