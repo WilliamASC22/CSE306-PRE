@@ -100,7 +100,6 @@ int getColIndex(char *colName, FILE *currFile){
     return colIndex;
 }
 
-<<<<<<< HEAD
 /**
  * Function: maxField
  * -----------------------
@@ -226,8 +225,8 @@ double minField(int colIndex, FILE *currFile){
             //Loop through each character
             for (NEGATIVE_VALUE; data[NEGATIVE_VALUE] != '\0' && data[NEGATIVE_VALUE] != '\r' && data[NEGATIVE_VALUE] != '\n'; NEGATIVE_VALUE++) {    
                 if (((data[NEGATIVE_VALUE]) >= '0' && (data[NEGATIVE_VALUE]) <= '9')) { YES_DIGITS = 0;}
-                else if (data[NEGATIVEVALUE] == '.' && yESDECIMAL == 0) {YES_DECIMAL = 1;}
-                else if (data[nEGITIVEVALUE] == '.' && yESDECIMAL == 1) {ISSUE_FOUND = 1;}
+                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 0) {YES_DECIMAL = 1;}
+                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 1) {ISSUE_FOUND = 1;}
                 else {ISSUE_FOUND = 1;}
             }
 
@@ -344,9 +343,16 @@ double meanField(int colIndex, FILE *currFile){
  *
  *    returns: the list of all rows as strings    
  */
-int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matches){
+int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matches) {
+
+    #define MAX_LINE 1204
+
     char buffer[bufferSize];
     if( h ){ fgets(buffer, bufferSize, currFile); }
+
+    int count = 0; 
+
+    
 
     rewind(currFile);
     
@@ -361,11 +367,13 @@ int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matche
         char field[MAX_LINE];
         int fieldIndex = 0;
 
+        int col = 0; 
+
         while (*pb != NULL) {
             // Detect if we're going in/out of quotes
             if (*pb == '"') { IN_QUOTES = !IN_QUOTES; }
             // If we've reached the end of our column
-            else if (*p == ',' && !IN_QUOTES) {
+            else if (*pb == ',' && !IN_QUOTES) {
                     field[fieldIndex] = '\0'; // End the string
                 // If we've reached our desired column index,   
                 if (col == colIndex) {
@@ -375,18 +383,20 @@ int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matche
                 }
                 fieldIndex = 0;
                 col++; // Move to the next column 
-            } else { field[fieldIndex++] = *p; }
-            p++;
+            } else { field[fieldIndex++] = *pb; }
+            pb++;
         }
 
-        if (match) {
+        if (MATCH) {
             matches[count] = strdup(buffer);
             count++;
         }
 
+
         return 0;
     }
 
+}
 
 int main(int argc, char *argv[]){
     FILE *currFile = NULL;
