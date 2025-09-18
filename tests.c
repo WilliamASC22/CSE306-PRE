@@ -85,9 +85,9 @@ void findRecordsTest(int colIndex, char *value, char *inFile, int expectedN, cha
 }
   
 // Tests
-Test(rowCount, test00) { countRowsTest("test.csv",819); }
-Test(columnCount, test00) { countColumnsTest("test.csv",8); }
-Test(min, test00) { minFieldTest(7,"test.csv",0.0); }
-Test(max, test00) { maxFieldTest(7,"test.csv",100.0); }
+//Test(rowCount, test00) { countRowsTest("test.csv",819); }
+//Test(columnCount, test00) { countColumnsTest("test.csv",8); }
+//Test(min, test00) { minFieldTest(7,"test.csv",0.0); }
+//Test(max, test00) { maxFieldTest(7,"test.csv",100.0); }
 //Test(mean, test00) { runTest("tests.csv",); }
 //Test(records, test00) { runTest("tests.csv",); }

@@ -438,11 +438,20 @@ int findRecords(int colIndex, char *value, FILE *currFile, char **matches) {
             pb++;
         }
 
+        field[fieldIndex] = '\0';
+        if (col == colIndex) {
+            if (strcmp(field, value) == 0) {
+                MATCH = 1;
+            }
+        }
+
         if (MATCH) {
-            matches[count] = buffer;
+            char *match = (char*)malloc(bufferSize);
+            strcpy(match,buffer);
+            matches[count] = match;
             count++;
         }
-        return 0;
+        
     }
     return count;
 }
@@ -558,7 +567,9 @@ int main(int argc, char *argv[]){
 
                 for(int i = 0; i < n;i++){
                     printf("%s\n",matches[i]);
+                    free(matches[i]);
                 }
+                free(matches);
             }
 
             else{
