@@ -200,45 +200,66 @@ double minField(int colIndex, FILE *currFile){
         //The column that you are looking at
         int currIndex = colIndex;
         char *data = strtok(buffer, ",");
+        int index = 0;
 
         //Loop through until you are at the column you want
         while(currIndex != 0){
+            index++;
+            int quoteFlag = 0;
             currIndex--;
             data = strtok(NULL, ",");
-        }
 
-        //Make sure that the value exists
-        if (data != NULL) {
-            //Check if it is negitive
-            int NEGATIVE_VALUE = 0;
-
-            if (data[NEGATIVE_VALUE] == '-') { NEGATIVE_VALUE = NEGATIVE_VALUE + 1; }
-
-            //Check if every character is a digit
-            int YES_DIGITS = 1;
-
-            //Check every character if there is a decimal
-            int YES_DECIMAL = 0;
-
-            int ISSUE_FOUND = 0;
-
-            //Loop through each character
-            for (NEGATIVE_VALUE; data[NEGATIVE_VALUE] != '\0' && data[NEGATIVE_VALUE] != '\r' && data[NEGATIVE_VALUE] != '\n'; NEGATIVE_VALUE++) {    
-                if (((data[NEGATIVE_VALUE]) >= '0' && (data[NEGATIVE_VALUE]) <= '9')) { YES_DIGITS = 0;}
-                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 0) {YES_DECIMAL = 1;}
-                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 1) {ISSUE_FOUND = 1;}
-                else {ISSUE_FOUND = 1;}
-            }
-
-            if (ISSUE_FOUND == 0 && YES_DIGITS == 0){
-                double temp = atof(data);
-                if (FIRST_VAL == 0) {
-                    minimum = temp;
-                    FIRST_VAL = 1;
+            if(data[0] == '"'){
+                quoteFlag = 1;
+                while(quoteFlag == 1){
+                    if(data[strlen(data) - 1] != '"'){
+                        data = strtok(NULL, ",");
+                    }else{
+                        quoteFlag = 0;
+                    }
                 }
-                if (temp < minimum){ minimum = temp; }
             }
         }
+
+        //flag non numeric
+        int decimalFlag = 0;
+        int i = 0;
+
+        if(data[i] == '-'){
+            i++;
+        }
+
+        int nOPROMBLEM = 0;
+
+        for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
+            if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
+                nOPROMBLEM = 1;
+            }
+
+            if(data[i] == '.'){
+                decimalFlag++;
+            }
+
+            if(decimalFlag > 1){
+                nOPROMBLEM = 1;
+            }
+        }
+
+        //Only change total and amount if there is no problem
+        if (nOPROMBLEM == 0) {
+        
+
+            double temp = atof(data);
+            
+            if (FIRST_VAL == 0) {
+                minimum = temp;
+                FIRST_VAL = 1;
+            }
+
+            if (temp < minimum){ minimum = temp; }
+        }
+            
+        
     }
 
     rewind(currFile);
@@ -267,7 +288,7 @@ double meanField(int colIndex, FILE *currFile){
     fgets(buffer, bufferSize, currFile);
 
     double total = 0.0;
-    int n = 0;
+    int amount = 0;
 
 
     //Loop through each line of the file
@@ -276,56 +297,70 @@ double meanField(int colIndex, FILE *currFile){
         //The column that you are looking at
         int currIndex = colIndex;
         char *data = strtok(buffer, ",");
+        int index = 0;
 
         //Loop through until you are at the column you want
         while(currIndex != 0){
+            index++;
+            int quoteFlag = 0;
             currIndex--;
             data = strtok(NULL, ",");
-        }
 
-        //Make sure that the value exists
-        if (data != NULL) {
-
-            //Check if it is negitive
-            int NEGATIVE_VALUE = 0;
-
-            if (data[NEGATIVE_VALUE] == '-') {
-
-                NEGATIVE_VALUE = NEGATIVE_VALUE + 1;
-            }
-
-            //Check if every character is a digit
-            int YES_DIGITS = 1;
-
-            //Check every character if there is a decimal
-            int YES_DECIMAL = 0;
-
-            int ISSUE_FOUND = 0;
-
-            //Loop through each character
-            for (NEGATIVE_VALUE; data[NEGATIVE_VALUE] != '\0' && data[NEGATIVE_VALUE] != '\r' && data[NEGATIVE_VALUE] != '\n'; NEGATIVE_VALUE++) {
-                if (((data[NEGATIVE_VALUE]) >= '0' && (data[NEGATIVE_VALUE]) <= '9')) { YES_DIGITS = 0; }
-                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 0) { YES_DECIMAL = 1; }
-                else if (data[NEGATIVE_VALUE] == '.' && YES_DECIMAL == 1) { ISSUE_FOUND = 1; }
-                else { ISSUE_FOUND = 1; }
-            }
-
-            if (ISSUE_FOUND == 0 && YES_DIGITS == 0){
-                double temp = atof(data);
-                total = total + temp;
-                n = n + 1;
+            if(data[0] == '"'){
+                quoteFlag = 1;
+                while(quoteFlag == 1){
+                    if(data[strlen(data) - 1] != '"'){
+                        data = strtok(NULL, ",");
+                    }else{
+                        quoteFlag = 0;
+                    }
+                }
             }
         }
+
+        //flag non numeric
+        int decimalFlag = 0;
+        int i = 0;
+
+        if(data[i] == '-'){
+            i++;
+        }
+
+        int nOPROMBLEM = 0;
+
+        for(i; data[i] != '\0' && data[i] != '\r' && data[i] != '\n'; i++){
+            if((data[i] < '0' || data[i] > '9') && data[i] != '.'){
+                nOPROMBLEM = 1;
+            }
+
+            if(data[i] == '.'){
+                decimalFlag++;
+            }
+
+            if(decimalFlag > 1){
+                nOPROMBLEM = 1;
+            }
+        }
+
+        //Only change total and amount if there is no problem
+        if (nOPROMBLEM == 0) {
+            double temp = atof(data);
+            total = total + temp;
+            amount = amount + 1;
+        }
+        
+        
     }
 
     rewind(currFile);
 
     //No number counted
-    if (n == 0) {
+    if (amount == 0) {
         exit(EXIT_FAILURE);
     }
 
-    double mean = total / n;
+    double mean = total / amount;
+    
     return mean;
 }
 
@@ -395,6 +430,8 @@ int findRecords(bool h, int colIndex, char *value, FILE *currFile, char **matche
 
         return 0;
     }
+
+    return count;
 
 }
 
@@ -467,7 +504,7 @@ int main(int argc, char *argv[]){
                 }else{
                     colIndex = getColIndex(tempIndex, currFile);
                 }
-                int meanNum = meanField(colIndex, currFile);
+                double meanNum = meanField(colIndex, currFile);
 
                 //Return 2 digits after the decimal like in the example: 10.26
                 printf("%.2f\n", meanNum);
