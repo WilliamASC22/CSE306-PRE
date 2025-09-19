@@ -395,7 +395,6 @@ double meanField(int colIndex, FILE *currFile){
  *    Returns all rows that contains the specified value in the
  *    specified column.
  *   
- *    h: header row? (yes/no)
  *    colIndex: the index of the column to search for 'value'
  *    value: the desired value to search for in 'colIndex'
  *    *currFile: input file
@@ -420,7 +419,7 @@ int findRecords(int colIndex, char *value, FILE *currFile, char **matches) {
 
         int col = 0; 
 
-        while (pb != NULL) {
+        while (*pb != '\0') {
             // Detect if we're going in/out of quotes
             if (*pb == '"') { IN_QUOTES = !IN_QUOTES; }
             // If we've reached the end of our column
@@ -430,7 +429,7 @@ int findRecords(int colIndex, char *value, FILE *currFile, char **matches) {
                 if (col == colIndex) {
                     // Check if the field matches 'value'
                     if (strcmp(field, value) == 0) { MATCH = 1; }
-                    break; 
+                    break;
                 }
                 fieldIndex = 0;
                 col++; // Move to the next column 
@@ -439,6 +438,8 @@ int findRecords(int colIndex, char *value, FILE *currFile, char **matches) {
         }
 
         field[fieldIndex] = '\0';
+        size_t len = strlen(field);
+        if (len > 0 && field[len-1] == '\n') field[len-1] = '\0';
         if (col == colIndex) {
             if (strcmp(field, value) == 0) {
                 MATCH = 1;
