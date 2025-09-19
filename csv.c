@@ -198,6 +198,7 @@ double maxField(int colIndex, FILE *currFile){
         }
     }
 
+    rewind(currFile);
     return max;
 }
 
@@ -461,7 +462,7 @@ int main(int argc, char *argv[]){
     FILE *currFile = NULL;
     int h_flag = 0;
 
-    if(argc <= 1){
+    if(argc <= 2){
         printf("Insufficient command line arguments");
     }else{
 
@@ -579,14 +580,6 @@ int main(int argc, char *argv[]){
             }
         }
     }
-
-    // currFile = fopen(argv[2], "r");
-    // int field = countColumns(currFile);
-    // printf("fields: %d\n", field);
-
-    // int lines = countRows(currFile);
-    // printf("%d\n", lines);
-
 
     fclose(currFile);
     return 0;

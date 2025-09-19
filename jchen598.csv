@@ -1,3 +1,3 @@
 DATE,UBIT,DURATION,ACTIVITY & TOOL DESCRIPTION
 2025/09/10, jchen598, 4hour, implimentation of countColumns; countRows; getColIndex; maxField; and main
-2025/09/17, jchen598, 2hour, maxfield - quotation edge case, non numeric edge case; debug getCol last column; print double/int; testing functionalities
+2025/09/17, jchen598, 2hour, maxfield - quotation edge case; non numeric edge case; debug getCol last column; print double/int; testing functionalities
