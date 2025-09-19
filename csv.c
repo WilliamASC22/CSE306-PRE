@@ -581,6 +581,8 @@ int main(int argc, char *argv[]){
         }
     }
 
-    fclose(currFile);
+    if(currFile != NULL){
+        fclose(currFile);
+    }
     return 0;
 }
