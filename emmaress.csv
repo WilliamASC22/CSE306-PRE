@@ -1,3 +1,8 @@
 DATE,UBIT,DURATION,ACTIVITY & TOOL DESCRIPTION
 2025/09/16,emmaress,15 minutes,added function comments to csv.c
 2025/09/16,emmaress,1 hour,improved readability & added function to handle -records option in csv.c
+2025/09/16,emmaress,20 minutes,added additional checks to csv.c to ensure proper input handling
+2025/09/18,emmaaress,1 hour,added Makefile & headers & tests file
+2025/09/18,emmaress,2 hours,fixed minor bugs in csv.c using gdb and ensured functionality
+2025/09/18,emmaress,1 hour, fixed last-column bug in findRecords in csv.c
+2025/09/18,emmaress,15 minutes, attempted to debug tests.c (getting segfault)
