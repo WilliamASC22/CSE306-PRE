@@ -4,3 +4,4 @@ DATE,UBIT,DURATION,ACTIVITY & TOOL DESCRIPTION
 2025/13/09, wbhuiyan, 4 hours, Worked on min and mean and set them up on main
 2025/17/09, wbhuiyan, 1 hour, Fixed errors on main and fixed this csv format
 2025/18/09, wbhuiyan, 1 hour, Changed min and mean to work properly with the format of the csv's such as the columns and the computation
+2025/19/09, wbhuiyan, 30 minutes, Fixed exiting problems on main

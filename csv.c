@@ -464,7 +464,10 @@ int main(int argc, char *argv[]){
 
     if(argc <= 2){
         printf("Insufficient command line arguments");
-    }else{
+        exit(EXIT_FAILURE);
+    }
+    
+    else{
 
         //check if file is present
         currFile = fopen(argv[argc - 1], "r");
@@ -584,5 +587,5 @@ int main(int argc, char *argv[]){
     if(currFile != NULL){
         fclose(currFile);
     }
-    return 0;
+    exit(EXIT_SUCCESS);
 }
